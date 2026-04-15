@@ -1,17 +1,17 @@
-FROM debian:trixie-slim
+# a separate "base" stage so we can update Debian easily across all our stages in one place
+FROM debian:trixie-slim AS base
 
+# common deps we need regardless
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
-		curl \
-		git \
-		jq \
 		wget \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
-ENV DISABLE_AUTOUPDATER 1
+# download claude in a separate stage so we get slightly better cache as we add more packages to the final image
+FROM base AS claude
 
 # https://claude.ai/install.sh
 # https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/latest
@@ -26,18 +26,34 @@ ENV CLAUDE_SHA256 d40d4c9eff224be6ba3586fd1b05acc3c8b3266998d67488a259ddcb82a6be
 ENV CLAUDE_SIZE 233785984
 
 RUN set -eux; \
-	wget -O '/usr/local/bin/claude' "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/$CLAUDE_VERSION/linux-x64/claude" --progress=dot:giga; \
-	echo "$CLAUDE_SHA256 */usr/local/bin/claude" | sha256sum --strict --check -; \
-	chmod +x '/usr/local/bin/claude'; \
-# smoke test
-	setpriv --clear-groups --no-new-privs --reuid 1024 --regid=1024 claude --version
+	wget -O /claude "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/$CLAUDE_VERSION/linux-x64/claude" --progress=dot:giga; \
+	echo "$CLAUDE_SHA256 */claude" | sha256sum --strict --check -; \
+	chmod +x /claude
+
+FROM base
+
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		curl \
+		git \
+		jq \
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 ENV GOTOOLCHAIN local
 ENV PATH /usr/local/go/bin:$PATH
 COPY --from=golang /usr/local/go /usr/local/go
 RUN go version
 
+# a Tianon-specific need - running containerd unprivileged inside Claude containers
 RUN install --directory --mode=1777 /run/containerd /var/lib/containerd
+# (we don't embed the necessary config for this to actually work here because it has to embed specific explicit uid/gid 😔)
+
+ENV DISABLE_AUTOUPDATER 1
+COPY --from=claude /claude /usr/local/bin/
+# smoke test
+RUN setpriv --clear-groups --no-new-privs --reuid 1024 --regid=1024 claude --version
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
