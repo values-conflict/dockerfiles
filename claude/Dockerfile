@@ -4,7 +4,9 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
+		curl \
 		jq \
+		wget \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
@@ -23,19 +25,9 @@ ENV CLAUDE_SHA256 d40d4c9eff224be6ba3586fd1b05acc3c8b3266998d67488a259ddcb82a6be
 ENV CLAUDE_SIZE 233785984
 
 RUN set -eux; \
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends wget; \
-	\
 	wget -O '/usr/local/bin/claude' "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/$CLAUDE_VERSION/linux-x64/claude" --progress=dot:giga; \
 	echo "$CLAUDE_SHA256 */usr/local/bin/claude" | sha256sum --strict --check -; \
 	chmod +x '/usr/local/bin/claude'; \
-	\
-	apt-mark auto '.*' > /dev/null; \
-	apt-mark manual $savedAptMark > /dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	apt-get dist-clean; \
-	\
 # smoke test
 	setpriv --clear-groups --no-new-privs --reuid 1024 --regid=1024 claude --version
 
