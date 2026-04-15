@@ -5,6 +5,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		curl \
+		git \
 		jq \
 		wget \
 	; \
