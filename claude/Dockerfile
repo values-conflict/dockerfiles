@@ -50,7 +50,10 @@ RUN go version
 RUN install --directory --mode=1777 /run/containerd /var/lib/containerd
 # (we don't embed the necessary config for this to actually work here because it has to embed specific explicit uid/gid 😔)
 
+# disable the auto-updater
+# https://www.schemastore.org/claude-code-settings.json#:~:text=DISABLE_AUTOUPDATER
 ENV DISABLE_AUTOUPDATER 1
+
 COPY --from=claude /claude /usr/local/bin/
 # smoke test
 RUN setpriv --clear-groups --no-new-privs --reuid 1024 --regid=1024 claude --version
