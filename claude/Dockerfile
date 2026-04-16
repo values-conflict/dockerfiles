@@ -36,8 +36,10 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		curl \
+		file \
 		git \
 		jq \
+		xxd \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
