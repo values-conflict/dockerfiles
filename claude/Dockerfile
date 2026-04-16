@@ -53,6 +53,9 @@ RUN install --directory --mode=1777 /run/containerd /var/lib/containerd
 # disable the auto-updater
 # https://www.schemastore.org/claude-code-settings.json#:~:text=DISABLE_AUTOUPDATER
 ENV DISABLE_AUTOUPDATER 1
+# disable the installation checker (which will complain about our system-installed claude 🙃)
+ENV DISABLE_INSTALLATION_CHECKS 1
+# https://github.com/anthropics/claude-code/issues/17289#issuecomment-3906140556
 
 COPY --from=claude /claude /usr/local/bin/
 # smoke test
