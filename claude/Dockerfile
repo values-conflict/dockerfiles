@@ -48,6 +48,16 @@ RUN set -eux; \
 		git \
 		jq \
 		xxd \
+		\
+# C deps
+		autoconf automake libtool \
+		g++ \
+		gcc \
+		libc6-dev \
+		make \
+		pkg-config \
+		\
+		libseccomp-dev \
 	; \
 	if grep -q bookworm /etc/os-release; then \
 		rm -rf /var/lib/apt/lists/*; \
