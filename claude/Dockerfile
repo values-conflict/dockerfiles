@@ -8,7 +8,11 @@ RUN set -eux; \
 		ca-certificates \
 		wget \
 	; \
-	apt-get dist-clean
+	if grep -q bookworm /etc/os-release; then \
+		rm -rf /var/lib/apt/lists/*; \
+	else \
+		apt-get dist-clean; \
+	fi
 
 # download claude in a separate stage so we get slightly better cache as we add more packages to the final image
 FROM base AS claude
@@ -44,7 +48,11 @@ RUN set -eux; \
 		jq \
 		xxd \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	if grep -q bookworm /etc/os-release; then \
+		rm -rf /var/lib/apt/lists/*; \
+	else \
+		apt-get dist-clean; \
+	fi
 
 ENV GOTOOLCHAIN local
 ENV PATH /usr/local/go/bin:$PATH
