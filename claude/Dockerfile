@@ -42,6 +42,7 @@ FROM base
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
+		bzip2 \
 		curl \
 		file \
 		git \
