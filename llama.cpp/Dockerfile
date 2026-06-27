@@ -12,7 +12,8 @@ RUN set -eux; \
 FROM base AS fetch
 
 # https://github.com/ggml-org/llama.cpp/releases
-ENV LLAMA_VERSION b9542
+ENV LLAMA_VERSION b9821
+# TODO use the binary Vulkan releases published by upstream?  they compile a lot of .so files for different CPUs which is probably able to be slightly faster
 
 RUN set -eux; \
 	wget -O llama.tar.gz "https://github.com/ggml-org/llama.cpp/archive/${LLAMA_VERSION}.tar.gz"; \
