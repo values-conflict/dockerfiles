@@ -8,7 +8,11 @@ RUN set -eux; \
 		ca-certificates \
 		wget \
 	; \
-	apt-get dist-clean
+	if grep -q bookworm /etc/os-release; then \
+		rm -rf /var/lib/apt/lists/*; \
+	else \
+		apt-get dist-clean; \
+	fi
 
 # download opencode in a separate stage so we get slightly better cache as we add more packages to the final image
 FROM base AS opencode
@@ -31,6 +35,7 @@ FROM base
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
+		bzip2 \
 		curl \
 		file \
 		git \
@@ -43,8 +48,15 @@ RUN set -eux; \
 		gcc \
 		libc6-dev \
 		make \
+		pkg-config \
+		\
+		libseccomp-dev \
 	; \
-	apt-get dist-clean
+	if grep -q bookworm /etc/os-release; then \
+		rm -rf /var/lib/apt/lists/*; \
+	else \
+		apt-get dist-clean; \
+	fi
 
 ENV GOTOOLCHAIN local
 ENV PATH /usr/local/go/bin:$PATH
