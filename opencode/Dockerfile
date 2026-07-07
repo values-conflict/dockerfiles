@@ -19,9 +19,9 @@ FROM base AS opencode
 
 # https://github.com/anomalyco/opencode/releases
 # (ignore "latest.json", "latest.yml", "latest-linux.yml", etc - they're all about the .deb files which are insane)
-ENV OPENCODE_VERSION 1.17.13
+ENV OPENCODE_VERSION 1.17.15
 # opencode-linux-x64.tar.gz
-ENV OPENCODE_SHA256 157afa289d1a8d9372de0ce19ac726119b937a1f6b201808d46f06e4e59bb348
+ENV OPENCODE_SHA256 0e1353771192c7d2dc0c610d61ff70668bb8a4420dc4d9e35cfd33d7245f3e67
 
 RUN set -eux; \
 	wget -O opencode.tgz "https://github.com/anomalyco/opencode/releases/download/v${OPENCODE_VERSION}/opencode-linux-x64.tar.gz" --progress=dot:giga; \
