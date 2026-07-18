@@ -25,10 +25,10 @@ FROM base AS claude
 
 # https://claude.ai/install.sh
 # https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/latest
-# https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/2.1.201/manifest.json
-ENV CLAUDE_VERSION 2.1.201
-ENV CLAUDE_SHA256 a34809a6839fdefff21b9347d7fb5b6b58e6a9cc208a5e62853f29c83eb107a3
-ENV CLAUDE_SIZE 251300664
+# https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/2.1.212/manifest.json
+ENV CLAUDE_VERSION 2.1.212
+ENV CLAUDE_SHA256 044a88cf3a5180776617fd3da1238dcbf9141ddec449a39cf7d2af1ac78e684e
+ENV CLAUDE_SIZE 264096568
 
 RUN set -eux; \
 	wget -O /claude "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/$CLAUDE_VERSION/linux-x64/claude" --progress=dot:giga; \
