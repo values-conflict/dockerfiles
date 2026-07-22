@@ -1,9 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
 FROM node:26-trixie-slim
 
 RUN set -eux; \
@@ -52,11 +46,11 @@ RUN npm config set update-notifier false
 # https://www.npmjs.com/package/@earendil-works/pi-coding-agent?activeTab=versions
 # https://pi.dev/api/latest-version
 # (https://github.com/earendil-works/pi/blob/a5afc3f171e422e08a2ccc342827719f9952f38a/packages/coding-agent/src/utils/version-check.ts#L4)
-ENV PI_VERSION 0.81.1
+ENV PI_VERSION {{ .version }}
 # TODO swap to downloading/installing the Bun standalone version?
 
 RUN set -eux; \
-	npm install -g --ignore-scripts "@earendil-works/pi-coding-agent@$PI_VERSION"; \
+	npm install -g --ignore-scripts "{{ .packageName }}@$PI_VERSION"; \
 	npm cache clean --force; \
 	pi --version
 
