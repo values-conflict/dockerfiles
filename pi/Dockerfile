@@ -52,7 +52,7 @@ RUN npm config set update-notifier false
 # https://www.npmjs.com/package/@earendil-works/pi-coding-agent?activeTab=versions
 # https://pi.dev/api/latest-version
 # (https://github.com/earendil-works/pi/blob/a5afc3f171e422e08a2ccc342827719f9952f38a/packages/coding-agent/src/utils/version-check.ts#L4)
-ENV PI_VERSION 0.81.1
+ENV PI_VERSION 0.82.0
 # TODO swap to downloading/installing the Bun standalone version?
 
 RUN set -eux; \
