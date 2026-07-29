@@ -79,3 +79,5 @@ RUN --mount=type=bind,from=build,src=/apt-deps.txt,dst=/apt-deps.txt,ro \
 
 COPY --from=build /install/bin/llama /usr/local/bin/
 RUN llama version
+
+CMD ["llama", "serve", "--host", "::"]
