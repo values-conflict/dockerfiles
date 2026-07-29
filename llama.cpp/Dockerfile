@@ -12,7 +12,7 @@ RUN set -eux; \
 FROM base AS fetch
 
 # https://github.com/ggml-org/llama.cpp/releases
-ENV LLAMA_VERSION b9821
+ENV LLAMA_VERSION b10103
 # TODO use the binary Vulkan releases published by upstream?  they compile a lot of .so files for different CPUs which is probably able to be slightly faster
 
 RUN set -eux; \
