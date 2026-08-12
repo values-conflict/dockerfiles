@@ -70,7 +70,7 @@ ENV PATH /usr/local/go/bin:$PATH
 COPY --from=golang /usr/local/go /usr/local/go
 RUN go version
 
-# a Tianon-specific need - running containerd unprivileged inside Claude containers
+# a Tianon-specific need - running containerd unprivileged inside containers
 RUN install --directory --mode=1777 /run/containerd /var/lib/containerd
 # (we don't embed the necessary config for this to actually work here because it has to embed specific explicit uid/gid 😔)
 
