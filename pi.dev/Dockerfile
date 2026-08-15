@@ -13,6 +13,7 @@ RUN set -eux; \
 		ca-certificates \
 		curl \
 		file \
+		gawk \
 		git \
 		jq \
 		wget \

@@ -45,6 +45,7 @@ RUN set -eux; \
 		bzip2 \
 		curl \
 		file \
+		gawk \
 		git \
 		jq \
 		xxd \
